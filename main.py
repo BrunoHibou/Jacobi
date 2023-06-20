@@ -39,13 +39,11 @@ int_n = int(input("insira o grau da matriz: "))
 print(int_n)
 
 '''
-
 A = np.array([[4, 1, -1],
               [3, 5, 1],
               [2, -1, 3]])
-
 '''
-matrix = get_matrix_from_input(int_n)
+A = get_matrix_from_input(int_n)
 print(A)
 
 #b = np.array([5, 7, 3])
