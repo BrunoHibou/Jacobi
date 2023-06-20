@@ -4,7 +4,6 @@ Implementação do método de jacobi para solução de sistemas lineares
 
 import numpy as np
 
- 
 #Função do método de Jacobi
 def jacobi(A, b, x0, max_iterations=100, tolerance=1e-6):
     n = len(A)
@@ -25,7 +24,6 @@ def jacobi(A, b, x0, max_iterations=100, tolerance=1e-6):
 
     return x
 
-
 #Funçao para captura de input para solução
 def get_matrix_from_input(n):
     matrix = np.zeros((n, n))
@@ -37,17 +35,17 @@ def get_matrix_from_input(n):
 
     return matrix
 
-
-
 int_n = int(input("insira o grau da matriz: "))
 print(int_n)
 
 '''
+
 A = np.array([[4, 1, -1],
               [3, 5, 1],
               [2, -1, 3]])
+
 '''
-A = get_matrix_from_input(int_n)
+matrix = get_matrix_from_input(int_n)
 print(A)
 
 #b = np.array([5, 7, 3])
