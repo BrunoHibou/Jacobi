@@ -1,5 +1,5 @@
 import numpy as np
-
+import copy 
 
 def get_matrix_from_input(n):
     '''Recebe os valores a serem calculados em forma de matriz''' 
@@ -21,13 +21,13 @@ def get_inter_inic(n):
 
 def Jacobi(matriz, b, x0, tol, max, grau):
     '''funçao que aplica o método de jacobi'''
-    if(grau == 3):
-        f1 = lambda x,y,z: (b[0]- matriz[0][1]*y+ matriz[0][2]*z)/matriz[0][0]
-        f2 = lambda x,y,z: (b[1]-matriz[1][0]*x+matriz[1][2]*z)/matriz[1][1]
-        f3 = lambda x,y,z: (b[2]-matriz[2][0]*x+matriz[2][1]*y)/matriz[2][2]
-    
-    if(grau == 2):
-        pass
+
+    f1 = lambda x,y,z: (b[0]-matriz[0][1]*y-matriz[0][2]*z)/matriz[0][0]
+    f2 = lambda x,y,z: (b[1]-matriz[1][0]*x-matriz[1][2]*z)/matriz[1][1]
+    f3 = lambda x,y,z: (b[2]-matriz[2][0]*x-matriz[2][1]*y)/matriz[2][2]
+    f4 = lambda x,y: (b[0]- matriz[0][1]*y)/matriz[0][0]
+    f5 = lambda x,y: (b[1]- matriz[1][0]*x)/matriz[1][1]
+
     
     # Implementation of Jacobi Iteration
     print('\nCount\tx1\tx2\tx3\n')
@@ -35,30 +35,51 @@ def Jacobi(matriz, b, x0, tol, max, grau):
     count = 1
     condition = True
     
-    x_temp=x0
-    x = x_temp
+    x_temp=copy.deepcopy(x0)
+    x = copy.deepcopy(x_temp) #armazena interaçao 0
     print(f'x: {x}')
     while condition:
         
-        if grau == 3:
-            x_temp[0] = f1(x[0], x[1], x[2])
-            #print(f'temp0: {x_temp[0]}')
-            x_temp[1] = f2(x[0], x[1], x[2])
-            #print(f'temp1: {x_temp[1]}')
-            x_temp[2] = f3(x[0], x[1], x[2])
-            #print(f'temp2: {x_temp[2]}')
+            #aplica a fórmula da lista pra encontrar x1, x2 e x3 (0, 1, 2) = (1,2,3) respectivamente
+            if grau == 3:
+                x_temp[0] = f1(x[0], x[1], x[2])
+                print(x)
+                print(x_temp)
+                #print(f'temp0: {x_temp[0]}')
+                x_temp[1] = f2(x[0], x[1], x[2])
+                #print(f'temp1: {x_temp[1]}')
+                x_temp[2] = f3(x[0], x[1], x[2])
+                #print(f'temp2: {x_temp[2]}')
+
+            if grau == 2:
+                x_temp[0] = f4(x[0], x[1])
+                #print(f'temp0: {x_temp[0]}')
+                x_temp[1] = f5(x[0], x[1])
+                print(x)
+                print(x_temp)
+
 
             #print('%d\t%0.7f\t%0.7f\t%0.7f\t%0.7f\t%0.7f\t%0.7f\n' %(count, x_temp[0],x_temp[1],x_temp[2],e1,e2,e3))
-            
+            #calcula o erro, x é a última interaçao ou interaçao 0 e x_temp é a atual.
             e1 = abs(x[0]-x_temp[0]);
             e2 = abs(x[1]-x_temp[1]);
-            e3 = abs(x[2]-x_temp[2]);
-            
-            print('%d\t%0.7f\t%0.7f\t%0.7f\t%f\t%f\t%f\n' %(count, x_temp[0],x_temp[1],x_temp[2],e1,e2,e3))
-            count+=1
-            x = x_temp
 
-            condition = e1<tol and e2<tol and e3<tol and count<=max
+            if grau ==3:
+                #só calcula e3 se a matriz não tem grau 2
+                e3 = abs(x[2]-x_temp[2])
+                print('%d\t%0.7f\t%0.7f\t%0.7f\t%f\t%f\t%f\n' %(count, x_temp[0],x_temp[1],x_temp[2],e1,e2,e3)) #print pra grau = 3
+            
+            print('%d\t%0.7f\t%0.7f\t\t%f\t%f\n' %(count, x_temp[0],x_temp[1],e1,e2)) #print pra grau = 2
+            count+=1
+
+
+            x = copy.deepcopy(x_temp) #Armazena a interaçao atual em X
+
+            #verifica a condiçao de parada se alguma delas for falsa a condiçao fica falsa e o loop para de executar
+            if grau == 3:
+                condition = e1>tol and e2>tol and e3>tol and count<=max
+            condition = e1>tol and e2>tol and count<=max
+            
     return x
     
 
