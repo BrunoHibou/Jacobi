@@ -43,8 +43,6 @@ def Jacobi(matriz, b, x0, tol, max, grau):
             #aplica a fórmula da lista pra encontrar x1, x2 e x3 (0, 1, 2) = (1,2,3) respectivamente
             if grau == 3:
                 x_temp[0] = f1(x[0], x[1], x[2])
-                print(x)
-                print(x_temp)
                 #print(f'temp0: {x_temp[0]}')
                 x_temp[1] = f2(x[0], x[1], x[2])
                 #print(f'temp1: {x_temp[1]}')
