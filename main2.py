@@ -22,9 +22,11 @@ def get_inter_inic(n):
 def Jacobi(matriz, b, x0, tol, max, grau):
     '''funçao que aplica o método de jacobi'''
 
+    #funções que calculam x^k
     f1 = lambda x,y,z: (b[0]-matriz[0][1]*y-matriz[0][2]*z)/matriz[0][0]
     f2 = lambda x,y,z: (b[1]-matriz[1][0]*x-matriz[1][2]*z)/matriz[1][1]
     f3 = lambda x,y,z: (b[2]-matriz[2][0]*x-matriz[2][1]*y)/matriz[2][2]
+    
     f4 = lambda x,y: (b[0]- matriz[0][1]*y)/matriz[0][0]
     f5 = lambda x,y: (b[1]- matriz[1][0]*x)/matriz[1][1]
 
@@ -53,8 +55,7 @@ def Jacobi(matriz, b, x0, tol, max, grau):
                 x_temp[0] = f4(x[0], x[1])
                 #print(f'temp0: {x_temp[0]}')
                 x_temp[1] = f5(x[0], x[1])
-                print(x)
-                print(x_temp)
+
 
 
             #print('%d\t%0.7f\t%0.7f\t%0.7f\t%0.7f\t%0.7f\t%0.7f\n' %(count, x_temp[0],x_temp[1],x_temp[2],e1,e2,e3))
@@ -94,6 +95,7 @@ b = list(map(int, input("Insira a matriz B: ").split()))
 print(f"A matriz B do sistema a ser calculado é: {b}")
 
 inter_inic = get_inter_inic(grau_da_matriz)
+#inter_inic = np.zeros(grau_da_matriz)
 print(f"os valores de x0 são: {inter_inic}")
 
 tol = int(input("Insira um valor para o expoente da tolerância:"))
@@ -103,7 +105,9 @@ print(f"o valor da tolerância é: {tol}")
 Max = int(input("Insira o valor máximo de interações: "))
 print(f"o valor máximo de interações é: {Max}")
 
+sol_exac = list(map(int, input("Insira a matriz B: ").split()))
 jac = Jacobi(matriz, b, inter_inic, tol, Max, grau_da_matriz)
 
-
+dist = abs(sol_exac - jac)
 print(jac)
+print(dist)
